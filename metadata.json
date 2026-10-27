@@ -1,0 +1,6 @@
+{
+  "name": "Amazon Best Finder Pro",
+  "description": "Advanced Amazon Affiliate Deal Engine, PA-API 5.0 product search, camelcamelcamel-style price history charts, dual English & Urdu Gemini AI product reviews, 4-way product comparisons, and top viral deals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

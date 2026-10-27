@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'javeediqbal1436@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidPriceAlert(data) {
+      return data.keys().hasAll(['email', 'targetPrice', 'productId', 'asin', 'status', 'createdAt']) &&
+        data.keys().hasOnly(['id', 'email', 'targetPrice', 'currentPrice', 'productId', 'productTitle', 'asin', 'currency', 'status', 'createdAt']) &&
+        data.email is string && data.email.size() > 3 && data.email.size() <= 256 &&
+        data.targetPrice is number && data.targetPrice > 0 && data.targetPrice < 100000 &&
+        data.productId is string && data.productId.size() <= 128 &&
+        data.asin is string && data.asin.size() <= 32 &&
+        data.status in ['active', 'triggered', 'cancelled'] &&
+        data.createdAt is string && data.createdAt.size() <= 100;
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Connection testing doc
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Price drop alerts collection
+    match /price_alerts/{alertId} {
+      // Anyone can submit a price drop alert if it satisfies strict schema validation
+      allow create: if isValidId(alertId) && isValidPriceAlert(incoming());
+
+      // Only the admin can list all alerts or read individual alerts (protects user email PII)
+      allow read: if isAdmin() || (isSignedIn() && existing().email == request.auth.token.email);
+
+      // Only admin can update or delete alerts (e.g. mark triggered or delete)
+      allow update, delete: if isAdmin();
+    }
+
+    // User profiles collection
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow create: if isSignedIn() && request.auth.uid == userId && (
+        (incoming().role == 'shopper') || (isAdmin() && incoming().role == 'admin')
+      );
+      allow update: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+    }
+  }
+}

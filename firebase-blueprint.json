@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "PriceAlert": {
+      "title": "PriceAlert",
+      "description": "A user-requested price drop alert targeting a specific Amazon product price threshold.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the price alert record."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address to notify when the price drops."
+        },
+        "targetPrice": {
+          "type": "number",
+          "description": "Target price threshold in USD."
+        },
+        "currentPrice": {
+          "type": "number",
+          "description": "Product price at the moment the alert was created."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Internal product ID."
+        },
+        "productTitle": {
+          "type": "string",
+          "description": "Title of the Amazon product."
+        },
+        "asin": {
+          "type": "string",
+          "description": "Amazon Standard Identification Number (ASIN)."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code such as USD."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "triggered", "cancelled"],
+          "description": "Current status of the alert."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the alert was registered."
+        }
+      },
+      "required": ["email", "targetPrice", "productId", "asin", "createdAt", "status"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Registered shopper or administrator profile.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "shopper"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "email", "role", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/price_alerts/{alertId}": {
+      "schema": "PriceAlert",
+      "description": "Stores user-configured price drop alerts for Amazon products."
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores shopper user profiles."
+    }
+  }
+}

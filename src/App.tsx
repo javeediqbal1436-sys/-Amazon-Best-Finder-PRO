@@ -54,9 +54,9 @@ function AppContent() {
   // Blog Posts State
   const [blogPosts] = useState<BlogPost[]>(INITIAL_BLOG_POSTS);
 
-  // Affiliate Tag State (Defaults to shorkot-20)
+  // Affiliate Tag State (Defaults to salman2008-20)
   const [affiliateTag, setAffiliateTag] = useState<string>(() => {
-    return localStorage.getItem('abf_affiliate_tag') || 'shorkot-20';
+    return localStorage.getItem('abf_affiliate_tag') || 'salman2008-20';
   });
 
   // Dark Mode State

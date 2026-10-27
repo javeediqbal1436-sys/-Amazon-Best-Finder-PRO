@@ -768,13 +768,58 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   </p>
                 </div>
 
-                <button
-                  onClick={fetchAlertsData}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-gray-800 text-amber-600 dark:text-amber-400 border border-amber-300 dark:border-amber-700 text-xs font-bold hover:bg-amber-50 transition-colors cursor-pointer"
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://console.firebase.google.com/project/gen-lang-client-0792839749/firestore/databases/ai-studio-amazonbestfinder-aaedc887-5454-4bef-83fe-e07ae4009023/data"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-gray-950 text-xs font-bold transition-colors shadow-xs cursor-pointer"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Open in Firebase Console</span>
+                  </a>
+
+                  <button
+                    onClick={fetchAlertsData}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-gray-800 text-amber-600 dark:text-amber-400 border border-amber-300 dark:border-amber-700 text-xs font-bold hover:bg-amber-50 transition-colors cursor-pointer"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${loadingAlerts ? 'animate-spin' : ''}`} />
+                    <span>Refresh</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Firebase Console Quick Links Bar */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-xs">
+                <a
+                  href="https://console.firebase.google.com/project/gen-lang-client-0792839749/firestore/databases/ai-studio-amazonbestfinder-aaedc887-5454-4bef-83fe-e07ae4009023/data"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-amber-400 transition-colors"
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${loadingAlerts ? 'animate-spin' : ''}`} />
-                  <span>Refresh Firestore</span>
-                </button>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">📁 Firestore Data (/price_alerts)</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+                </a>
+
+                <a
+                  href="https://console.firebase.google.com/project/gen-lang-client-0792839749/authentication/users"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-amber-400 transition-colors"
+                >
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">👥 Auth Users & Logins</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+                </a>
+
+                <a
+                  href="https://console.firebase.google.com/project/gen-lang-client-0792839749/firestore/databases/ai-studio-amazonbestfinder-aaedc887-5454-4bef-83fe-e07ae4009023/rules"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-amber-400 transition-colors"
+                >
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">🛡️ Deployed Security Rules</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+                </a>
               </div>
 
               {simulatedEmail && (
